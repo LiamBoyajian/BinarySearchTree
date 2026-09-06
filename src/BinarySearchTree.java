@@ -18,7 +18,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
 
     @Override
     public boolean contains(Comparable<T> find) {
-        return false;
+        return binarySearchHelper(root, find) != null;
     }
 
     @Override
@@ -43,6 +43,27 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
         root = null;
     }
 
+
+    protected BinaryNode<T> binarySearchHelper(BinaryNode<T> node, Comparable<T> find){
+        int compareValue = find.compareTo(node.getEntry());
+        if (compareValue == 0){
+            return node;
+        }else if (compareValue > 0){
+
+            if (node.left != null){
+                return binarySearchHelper(node.left, find);
+            }else{
+                return null;
+            }
+
+        }else {
+            if (node.right != null){
+                return binarySearchHelper(node.right, find);
+            }else{
+                return null;
+            }
+        }
+    }
 
     /**
      * Performs the naive binary search tree insert algorithm to recursively
