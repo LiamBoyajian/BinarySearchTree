@@ -101,6 +101,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
                 addHelper(newNode, subtree.right);
             }else{
                 subtree.right = newNode;
+                newNode.up = subtree;
             }
         }else {
             //less than
@@ -108,6 +109,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
                 addHelper(newNode, subtree.left);
             }else{
                 subtree.left = newNode;
+                newNode.up = subtree;
             }
         }
     }
