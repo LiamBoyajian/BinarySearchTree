@@ -15,8 +15,7 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
         if (parent == null) throw new IllegalArgumentException("parent is null");
 
         BinaryNode<T> parentOfParent = parent.up;
-        if (parentOfParent == null) throw new IllegalStateException("parent has no parent and isn't the root node");
-
+        if (parentOfParent == null && parent != root) throw new IllegalStateException("parent has no parent and isn't the root node");
 
         if (parent.left == child){
             //right rotation
@@ -24,7 +23,7 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
             child.right = parent;
         } else if (parent.right == child){
             //left rotation
-            parent.left = child.left;
+            parent.right = child.left;
             child.left = parent;
         }else{
             throw new IllegalArgumentException("provided nodes are not parent and child");
@@ -32,72 +31,183 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
 
         parent.up = child;
 
-        if (parentOfParent.left == parent){
-            parentOfParent.left = child;
-        }else if (parentOfParent.right == parent){
-            parentOfParent.right = child;
-        }else{
-            throw new IllegalStateException("parent node's parent does not link to the parent node");
+        if (parentOfParent != null) {
+            if (parentOfParent.left == parent) {
+                parentOfParent.left = child;
+            } else if (parentOfParent.right == parent) {
+                parentOfParent.right = child;
+            } else {
+                throw new IllegalStateException("parent node's parent does not link to the parent node");
+            }
         }
 
+        if (parent == root)
+            root = child;
+
         child.up = parentOfParent;
-
-
     }
 
-    protected void instantiateTestTreeHelper(){
-        root = new BinaryNode<T>(null);
-        root.left = new BinaryNode<T>(null);
-        root.left.up = root;
+    protected static BinaryNode<Integer> _instantiateTestTreeHelper(){
+        BinaryNode<Integer> result = new BinaryNode<Integer>(10);
 
-        root.left.left = new BinaryNode<T>(null);
-        root.left.left.up = root.left;
-        root.left.right = new BinaryNode<T>(null);
-        root.left.right.up = root.left.right;
+        result.left = new BinaryNode<Integer>(5);
+        result.left.up = result;
+        result.right = new BinaryNode<Integer>(15);
+        result.right.up = result;
 
-        root.left.left.left = new BinaryNode<T>(null);
-        root.left.left.left.up = root.left.left;
-        root.left.left.right = new BinaryNode<T>(null);
-        root.left.left.right.up = root.left.left;
-        root.left.right.left = new BinaryNode<T>(null);
-        root.left.right.left.up = root.left.right;
-        root.left.right.right = new BinaryNode<T>(null);
-        root.left.right.right.up = root;
+        result.left.left = new BinaryNode<Integer>(2);
+        result.left.left.up = result.left;
+        result.left.right = new BinaryNode<Integer>(6);
+        result.left.right.up = result.left.right;
 
-        root.right = new BinaryNode<T>(null);
-        root.right.up = root;
+
+        result.left.left.left = new BinaryNode<Integer>(1);
+        result.left.left.left.up = result.left.left;
+        result.left.left.right = new BinaryNode<Integer>(3);
+        result.left.left.right.up = result.left.left;
+
+        result.left.right.left = new BinaryNode<Integer>(4);
+        result.left.right.left.up = result.left.right;
+        result.left.right.right = new BinaryNode<Integer>(7);
+        result.left.right.right.up = result.left.right;
+
+        result.right.right = new BinaryNode<Integer>(30);
+        result.right.right.up = result.right;
+
+        result.right.right.right = new BinaryNode<Integer>(45);
+        result.right.right.right.up = result.right.right;
+
+        return result;
     }
-    public boolean test1(){
-        instantiateTestTreeHelper();
-        //test rotations on non-root node
+    public static boolean test1(){
+        BSTRotation<Integer> _tree = new BSTRotation<Integer>();
+        _tree.root = _instantiateTestTreeHelper();
 
-        BinaryNode<T> parentOfParent = root.left;
-        BinaryNode<T> parent = root.left.left;
-        BinaryNode<T> child = root.left.left.right;
 
-        rotate(child, parent);
+        //test left rotation on non-root node
+        BinaryNode<Integer> parentOfParent = _tree.root.left;
+        BinaryNode<Integer> parent = _tree.root.left.left;
+        BinaryNode<Integer> child = _tree.root.left.left.right;
+
+        _tree.rotate(child, parent);
 
         if (parentOfParent.left != child) return false;
         if (parent.up != child) return false;
         if (child.up != parentOfParent) return false;
         if (child.left != parent) return false;
+        if (child.getEntry() < parent.getEntry() ) return false;
 
 
-        //child = root.left.left.left;
+        //test right rotation on root child node
+        parentOfParent = _tree.root;
+        parent = _tree.root.left;
+        child = _tree.root.left.left;
 
-        //rotate(child, parent);
+        _tree.rotate(child, parent);
+
+        if (parentOfParent.left != child) return false;
+        if (parent.up != child) return false;
+        if (child.up != parentOfParent) return false;
+        if (child.right != parent) return false;
+
 
 
         return true;
     }
-    public boolean test2(){
-        instantiateTestTreeHelper();
+    public static boolean test2(){
+        BSTRotation<Integer> _tree = new BSTRotation<Integer>();
+        _tree.root = _instantiateTestTreeHelper();
+
+        //test right rotation on root node
+        BinaryNode<Integer> parentOfParent = null;
+        BinaryNode<Integer> parent = _tree.root;
+        BinaryNode<Integer> child = _tree.root.left;
+
+        _tree.rotate(child, parent);
+
+        if (parent.up != child) return false;
+        if (child.up != parentOfParent) return false;
+        if (child.right != parent) return false;
+
+        //test left rotation on root node
+        parentOfParent = null;
+        parent = _tree.root;
+        child = _tree.root.right;
+
+        _tree.rotate(child, parent);
+
+        if (parent.up != child) return false;
+        if (child.up != parentOfParent) return false;
+        if (child.left != parent) return false;
 
 
         return true;
     }
-    public boolean test3(){
-        instantiateTestTreeHelper();
+    public static boolean test3(){
+        BSTRotation<Integer> _tree = new BSTRotation<Integer>();
+        _tree.root = _instantiateTestTreeHelper();
+
+
+
+        //rotation on 0 shared child nodes
+        BinaryNode<Integer> parentOfParent = _tree.root.right;
+        BinaryNode<Integer> parent = _tree.root.right.right;
+        BinaryNode<Integer> child = _tree.root.right.right.right;
+
+        _tree.rotate(child, parent);
+
+        if (parent.up != child) return false;
+        if (child.up != parentOfParent) return false;
+        if (child.left != parent) return false;
+        if (child.right != null) return false;
+        if (parent.right != null) return false;
+        if (parent.left != null) return false;
+
+
+        //rotation on 1 shared child nodes
+        parentOfParent = _tree.root;
+        parent = _tree.root.right;
+        child = _tree.root.right.right;
+
+        _tree.rotate(child, parent);
+
+        if (parent.up != child) return false;
+        if (child.up != parentOfParent) return false;
+        if (child.left != parent) return false;
+        if (child.left == null) return false;
+        if (child.right != null) return false;
+        if (parent.right == null) return false;
+        if (parent.left != null) return false;
+
+        //rotation on 2 shared child nodes
+        parentOfParent = null;
+        parent = _tree.root;
+        child = _tree.root.right;
+
+        _tree.rotate(child, parent);
+
+        if (parent.up != child) return false;
+        if (child.up != parentOfParent) return false;
+        if (child.left != parent) return false;
+        if (child.left == null) return false;
+        if (child.right != null) return false;
+        if (parent.right == null) return false;
+        if (parent.left == null) return false;
+
+        //rotation on 3 shared child nodes
+        parentOfParent = _tree.root;
+        parent = _tree.root.left;
+        child = _tree.root.left.left;
+
+        _tree.rotate(child, parent);
+
+        if (parent.up != child) return false;
+        if (child.up != parentOfParent) return false;
+        if (child.right != parent) return false;
+        if (child.left == null) return false;
+        if (child.right == null) return false;
+        if (parent.right == null) return false;
+        if (parent.left == null) return false;
 
 
         return true;
@@ -105,7 +215,9 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
 
 
     public static void main(String args[]){
-        BSTRotation<Integer> aga = new BSTRotation<Integer>();
-        System.out.println(aga.test1());
+
+        System.out.println("test 1: " +test1());
+        System.out.println("test 2: " +test2());
+        System.out.println("test 3: " +test3());
     }
 }

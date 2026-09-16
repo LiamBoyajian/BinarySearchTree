@@ -12,6 +12,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
     }
     @Override
     public void add(T data) throws NullPointerException {
+        if (data == null) throw new NullPointerException("data is null");
         var newNode = new BinaryNode<T>(data);
         if (root == null){
             root = new BinaryNode<T>(data);
@@ -27,6 +28,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
      */
     @Override
     public boolean contains(Comparable<T> find) {
+        if (root == null) return false;
         return binarySearchHelper(root, find) != null;
     }
 
@@ -67,7 +69,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
         int compareValue = find.compareTo(node.getEntry());
         if (compareValue == 0){
             return node;
-        }else if (compareValue > 0){
+        }else if (compareValue < 0){
 
             if (node.left != null){
                 return binarySearchHelper(node.left, find);
@@ -112,6 +114,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
                 newNode.up = subtree;
             }
         }
+        ++version;
     }
 
     /**
@@ -176,10 +179,15 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
         }
     }
     public static void main(String args[]){
+        BinarySearchTree<String> temp = new BinarySearchTree<>();
+        System.out.println(temp.contains("testing"));
+        test1();
+        test2();
+        test3();
+    }
 
+    public static boolean test1(){
         BinarySearchTree<Integer> _treeInteger = new BinarySearchTree<Integer>();
-        BinarySearchTree<String> _treeString = new BinarySearchTree<String>();
-
         //TEST 1
         System.out.println("TEST 1 --------------");
         _treeInteger.add(1);
@@ -205,12 +213,39 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
         for (Integer i : _treeInteger){
             System.out.print(i + " , ");
         }
+
+        System.out.println(_treeInteger.contains(1) + " == true");
+        System.out.println(_treeInteger.contains(-1) + " == true");
+        System.out.println(_treeInteger.contains(2) + " == true");
+        System.out.println(_treeInteger.contains(10) + " == true");
+        System.out.println(_treeInteger.contains(4) + " == true");
+
         System.out.println();
         _treeInteger.clear();
         System.out.println("Length (expected 0) is " + _treeInteger.size());
 
+        BinaryNode<Integer> tempRoot = new BinaryNode<>(10);
+        tempRoot.right = new BinaryNode<Integer>(13);
+        tempRoot.left = new BinaryNode<Integer>(2);
+        tempRoot.right.right = new BinaryNode<Integer>(16);
+        tempRoot.right.left = new BinaryNode<Integer>(11);
+        _treeInteger.root = tempRoot;
 
+        System.out.println(_treeInteger.contains(10) + " == true");
+        System.out.println(_treeInteger.contains(13) + " == true");
+        System.out.println(_treeInteger.contains(2) + " == true");
+        System.out.println(_treeInteger.contains(16) + " == true");
+        System.out.println(_treeInteger.contains(11) + " == true");
 
+        System.out.println(_treeInteger.isEmpty() + " == false");
+
+        System.out.println(_treeInteger.size() + " == 5");
+
+        return true;
+    }
+
+    public static boolean test2(){
+        BinarySearchTree<Integer> _treeInteger = new BinarySearchTree<Integer>();
         //TEST 2 : same values, different order.
         System.out.println("TEST 2 --------------");
         System.out.println("TEST 1 --------------");
@@ -240,9 +275,11 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
         System.out.println();
         _treeInteger.clear();
         System.out.println("Length (expected 0) is " + _treeInteger.size());
+        return true;
+    }
 
-
-
+    public static boolean test3(){
+        BinarySearchTree<String> _treeString = new BinarySearchTree<String>();
         //TEST 3 : strings
         System.out.println("TEST 3 --------------");
 
@@ -264,6 +301,9 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
 
         _treeString.clear();
         System.out.println("Length (expected 0) is " + _treeString.size());
+        return true;
     }
+
+
 }
 
