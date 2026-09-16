@@ -47,6 +47,10 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
         child.up = parentOfParent;
     }
 
+    /**
+     * Helper method to create a standardized binary search tree for tests.
+     * @return the root node which contains a binary search tree
+     */
     protected static BinaryNode<Integer> _instantiateTestTreeHelper(){
         BinaryNode<Integer> result = new BinaryNode<Integer>(10);
 
