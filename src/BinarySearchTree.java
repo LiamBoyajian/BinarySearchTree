@@ -181,12 +181,12 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
     public static void main(String args[]){
         BinarySearchTree<String> temp = new BinarySearchTree<>();
         System.out.println(temp.contains("testing"));
-        test1();
-        test2();
-        test3();
+        temp.test1();
+        temp.test2();
+        temp.test3();
     }
 
-    public static boolean test1(){
+    public boolean test1(){
         BinarySearchTree<Integer> _treeInteger = new BinarySearchTree<Integer>();
         //TEST 1
         System.out.println("TEST 1 --------------");
@@ -244,7 +244,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
         return true;
     }
 
-    public static boolean test2(){
+    public boolean test2(){
         BinarySearchTree<Integer> _treeInteger = new BinarySearchTree<Integer>();
         //TEST 2 : same values, different order.
         System.out.println("TEST 2 --------------");
@@ -278,7 +278,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
         return true;
     }
 
-    public static boolean test3(){
+    public boolean test3(){
         BinarySearchTree<String> _treeString = new BinarySearchTree<String>();
         //TEST 3 : strings
         System.out.println("TEST 3 --------------");

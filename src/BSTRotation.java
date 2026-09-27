@@ -83,7 +83,7 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
 
         return result;
     }
-    public static boolean test1(){
+    public boolean test1(){
         BSTRotation<Integer> _tree = new BSTRotation<Integer>();
         _tree.root = _instantiateTestTreeHelper();
 
@@ -118,7 +118,7 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
 
         return true;
     }
-    public static boolean test2(){
+    public boolean test2(){
         BSTRotation<Integer> _tree = new BSTRotation<Integer>();
         _tree.root = _instantiateTestTreeHelper();
 
@@ -147,7 +147,7 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
 
         return true;
     }
-    public static boolean test3(){
+    public boolean test3(){
         BSTRotation<Integer> _tree = new BSTRotation<Integer>();
         _tree.root = _instantiateTestTreeHelper();
 
@@ -219,9 +219,9 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T>{
 
 
     public static void main(String args[]){
-
-        System.out.println("test 1: " +test1());
-        System.out.println("test 2: " +test2());
-        System.out.println("test 3: " +test3());
+        BSTRotation<Integer> tempTree = new BSTRotation<>();
+        System.out.println("test 1: " + tempTree.test1());
+        System.out.println("test 2: " + tempTree.test2());
+        System.out.println("test 3: " + tempTree.test3());
     }
 }
